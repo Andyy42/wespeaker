@@ -98,7 +98,10 @@ def tar_file_and_group(data):
                         example[postfix] = file_obj.read().decode(
                             'utf8').strip()
                     elif postfix in AUDIO_FORMAT_SETS:
-                        waveform, sample_rate = torchaudio.load(file_obj)
+                        # NOTE: FIX for ~ AttributeError: '_Stream' object has no attribute 'seekable'
+                        raw = file_obj.read()
+                        buf = io.BytesIO(raw)
+                        waveform, sample_rate = torchaudio.load(buf)
                         example['wav'] = waveform
                         example['sample_rate'] = sample_rate
                     else:
@@ -351,7 +354,8 @@ def filter(data,
                 feat = get_random_chunk(feat, max_num_frames)
             sample['feat'] = feat
         else:
-            assert 'sample_rate' in sample
+            # print(sample)
+            assert 'sample_rate' in sample, 'sample_rate not in {}'.format(list(sample.keys()))
             assert 'wav' in sample
             sample_rate = sample['sample_rate']
             wav = sample['wav'][0]

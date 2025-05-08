@@ -7,8 +7,8 @@
 
 . ./path.sh || exit 1
 
-stage=3
-stop_stage=3
+stage=2
+stop_stage=2
 
 # data=data
 # data="/scratch/project/open-28-58/xodehn09/data"
@@ -45,7 +45,7 @@ gpus="[0]"
 # config="$exp_dir/config.yaml"
 # eval_model=avg_model.pt
 
-num_avg=2
+num_avg=3
 # checkpoint=$exp_dir/models/model_20.pt
 
 
@@ -81,9 +81,9 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
   tools/evaluate_V2.sh \
     --exp_dir $exp_dir --model_path $model_path \
     --nj 1 --gpus $gpus --data_type ${data_type} \
-    --data_list ${data}/NAKI_filtered/test/NAKI_split/raw.list \
-    --store_dir NAKI_filtered/test \
-    --data_label ${data}/NAKI_filtered/test/NAKI_split/utt2spk
+    --data_list ${data}/raw.list \
+    --store_dir NAKI_diff_2024-11-14 \
+    --data_label ${data}/utt2spk
 
   # VoxLingua107
   # # NOTE: Create scores and prints accuracy

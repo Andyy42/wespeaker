@@ -56,6 +56,8 @@ def main():
     print(path_list)
     avg = None
     num = args.num
+    print(num)
+    print(path_list)
     assert num == len(path_list)
     for path in path_list:
         print('Processing {}'.format(path))

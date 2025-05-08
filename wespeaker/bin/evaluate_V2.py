@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import copy
+import sys
 import os
 
 import fire
@@ -41,6 +42,13 @@ la lb ln lo lt lv mg mi mk ml mn mr ms mt my ne nl nn no oc pa pl ps pt ro ru
 sa sco sd si sk sl sn so sq sr su sv sw ta te tg th tk tl tr tt uk ur uz vi war
 yi yo zh""".split()
 
+# # For VoxLingua107 without cs and with NAKI
+# VOXLINGUA107_LANG="""ab af am ar as az ba be bg bn bo br bs ca ceb cy da de el en eo es et eu fa
+# fi fo fr gl gn gu gv haw ha hi hr ht hu hy ia id is it iw ja jw ka kk km kn ko
+# la lb ln lo lt lv mg mi mk ml mn mr ms mt my ne nl nn no oc pa pl ps pt ro ru
+# sa sco sd si sk sl sn so sq sr su sv sw ta te tg th tk tl tr tt uk ur uz vi war
+# yi yo zh""".split()
+
 def evaluate(config="conf/config.yaml", **kwargs):
     # parse configs first
     configs = parse_config_or_kwargs(config, **kwargs)
@@ -54,7 +62,7 @@ def evaluate(config="conf/config.yaml", **kwargs):
 
     # Since the input length is not fixed, we set the built-in cudnn
     # auto-tuner to False
-    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.benchmark = False if not utt_chunk else True
 
     # Get spk2id_dict with labels
     data_label = configs["data_label"]
@@ -64,12 +72,28 @@ def evaluate(config="conf/config.yaml", **kwargs):
     # TODO: Refactor this
     # Add missing language labels so the model's matches projection layer
     if isinstance(eval_dataset, str) and "voxlingua_dev" in eval_dataset.lower():
+    # if True:
         current_lang = [ item[1] for item in data_utt_spk_list ]
+        print("current lang:", current_lang)
         for lng in VOXLINGUA107_LANG:
             if lng not in current_lang:
                 data_utt_spk_list.append(["-", lng])
 
+        print("total lang:", len(data_utt_spk_list))
+
     spk2id_dict = spk2id(data_utt_spk_list)
+    
+    # FIX: If some naki class is missing add it to the naki_cls so the model is
+    # initialized correctly
+    for naki_cls in ['1-1', '1-2', '1-3', '1-4', '2-1', '2-2', '2-3', '2-4',
+                 '3-1', '3-2', '3-3', '4-1', '4-2']:
+        if not naki_cls in  spk2id_dict:
+            spk2id_dict[naki_cls] = []
+
+    # Sort the dict
+    spk2id_dict = dict(sorted(spk2id_dict.items()))
+
+    print(list(spk2id_dict.keys()))
 
 
 
@@ -130,18 +154,28 @@ def evaluate(config="conf/config.yaml", **kwargs):
     embed_ark = os.path.abspath(embed_ark)
     embed_scp = embed_ark[:-3] + "scp"
 
+
+    # Taken from OLD dataset
+    # TODO: Remove NITERS
+    NITERS=36658 # 40 s segments 
+
     correct = 0
     total = 0
     result = []
     with torch.no_grad():
         with kaldiio.WriteHelper('ark,scp:' + embed_ark + "," +
                                  embed_scp) as writer:
-            for _, batch in (enumerate(dataloader)):
+            # for batch_i, batch in (enumerate(dataloader)):
+            for batch_i, batch in enumerate(tqdm(dataloader, dynamic_ncols=True,
+                                           file=sys.stderr, total=NITERS)):
+
                 utts = batch["key"]
                 targets = batch["label"]
                 features = batch["feat"]
                 features = features.float().to(device)  # (B,T,F)
                 
+                print(f"[{batch_i}] utts: {utts[0]}\ttargets: {targets[0]}")
+
                 # Forward through model
                 outputs = model(features, targets.float().to(device))  # embed or (embed_a, embed_b)
                 embeds = outputs[-1] if isinstance(outputs, tuple) else outputs

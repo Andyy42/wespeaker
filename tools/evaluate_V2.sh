@@ -71,12 +71,15 @@ for suffix in $(seq 0 $(($nj - 1))); do
     --num-workers ${num_workers} \
     --reverb_data ${reverb_data} \
     --noise_data ${noise_data} \
+    --utt_chunk "40" \
     --aug-prob ${aug_prob} \
-    >${log_dir}/split_${suffix}.log 2>&1 &
+    >${log_dir}/split_${suffix}.log  &
+    # >${log_dir}/split_${suffix}.log 2>&1 &
 done
 
-
+    # WARN: Utterences longer than 40 might cause hard to debug errors! 
     # --utt_chunk "40" \
+
 
 wait
 
