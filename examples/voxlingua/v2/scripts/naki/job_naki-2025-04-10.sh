@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=40-epochs-NAKI-WavLM-2025-04-10 # Job name
+#SBATCH --job-name=20-epochs-NAKI-WavLM-2025-04-10 # Job name
 #SBATCH --output=logs/wavlm-naki/out_naki_train_sm.%j     # Name of stdout output file
 #SBATCH --error=logs/wavlm-naki/err_naki_train_sm.%j      # Name of stderr error file
 #SBATCH --partition=small-g             # or ju-standard-g, partition name small-g
@@ -8,7 +8,7 @@
 #SBATCH --ntasks-per-node=16 # 56          # 16 MPI ranks per node
 #SBATCH --gpus-per-node=1    # 8         # Allocate one gpu per MPI rank
 #SBATCH --mem=64GB               # 448GB
-#SBATCH --time=03:00:00                # Run time (d-hh:mm:ss)
+#SBATCH --time=24:00:00                # Run time (d-hh:mm:ss)
 # #SBATCH --time=01:00:00                # Run time (d-hh:mm:ss)
 #SBATCH --account=project_465001737   # Project for billing
 
@@ -41,15 +41,17 @@ export MIOPEN_USER_DB_PATH="/tmp/$USER"
 
 # exp_name=WavLM-BasePlus-FullFineTuning-MHFA-emb256-3s-LRS10-Epoch40-no-margin
 # Old experiment
-base_exp_name="NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin"
+base_exp_name="03_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin_lwd_classweights"
 export base_exp_dir="exp_naki/$base_exp_name"
 # export checkpoint="exp/WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin/models/model_21.pt"
 # export checkpoint="${base_exp_dir}/models/base_model.pt"
-export checkpoint="exp_naki/model_00.pt"
-export checkpoint="$base_exp_dir/models/model_31.pt"
+# export checkpoint="exp_naki/model_00.pt" # Invalid model...
+export checkpoint="exp/WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin/models/MHFA_SM_model_00.pt"
+# export checkpoint="$base_exp_dir/models/model_31.pt"
 
 # export config="$base_exp_dir/config.yaml"
-export config="conf/wavlm_base_MHFA_LR_no_margin_40_naki.yaml"
+# export config="conf/wavlm_base_MHFA_LR_no_margin_40_naki.yaml"
+export config="conf/wavlm_base_MHFA_LR_no_margin_classweights_20_naki.yaml"
 
 # New experiment
 export exp_name="$base_exp_name"

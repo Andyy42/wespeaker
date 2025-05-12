@@ -85,10 +85,11 @@ def evaluate(config="conf/config.yaml", **kwargs):
     
     # FIX: If some naki class is missing add it to the naki_cls so the model is
     # initialized correctly
-    for naki_cls in ['1-1', '1-2', '1-3', '1-4', '2-1', '2-2', '2-3', '2-4',
-                 '3-1', '3-2', '3-3', '4-1', '4-2']:
-        if not naki_cls in  spk2id_dict:
-            spk2id_dict[naki_cls] = []
+    if isinstance(eval_dataset, str) and not "voxlingua_dev" in eval_dataset.lower():
+        for naki_cls in ['1-1', '1-2', '1-3', '1-4', '2-1', '2-2', '2-3', '2-4',
+                     '3-1', '3-2', '3-3', '4-1', '4-2']:
+            if not naki_cls in  spk2id_dict:
+                spk2id_dict[naki_cls] = []
 
     # Sort the dict
     spk2id_dict = dict(sorted(spk2id_dict.items()))

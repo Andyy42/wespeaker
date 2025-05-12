@@ -3,7 +3,7 @@
 # Define the path to the template file
 template_file="scripts/naki/job_evaluate_template.sh"
 
-for i in {30..40}
+for i in {1..20}
 do
   # Create a temporary script file
   temp_script="temp_script_${i}.sh"

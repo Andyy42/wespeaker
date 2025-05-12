@@ -7,7 +7,7 @@
 #SBATCH --ntasks-per-node=8          # 16 MPI ranks per node
 #SBATCH --gpus-per-node=1             # Allocate one gpu per MPI rank
 #SBATCH --mem=56GB
-#SBATCH --time=01:00:00                # Run time (d-hh:mm:ss)
+#SBATCH --time=01:20:00                # Run time (d-hh:mm:ss)
 #SBATCH --account=project_465001737   # Project for billing
 
 # https://lumi-supercomputer.github.io/LUMI-training-materials/4day-20231003/extra_2_06_Introduction_to_AMD_ROCm_Ecosystem/
@@ -35,9 +35,10 @@ export MIOPEN_USER_DB_PATH="/tmp/$USER"
 
 # singularity exec --bind $PROJ_DIR:$PROJ_DIR --pwd $SCRIPT_DIR "$IMAGE" "$SCRIPT"
 
-base_exp_dir="exp"
+base_exp_dir="exp_naki"
 # base_exp_name="NAKI-only--WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch100-softmax"
-base_exp_name="NAKI-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
+# base_exp_name="NAKI-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
+base_exp_name="03_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin_lwd_classweights"
 
 # base_exp_name="NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
 # export base_exp_dir="exp_naki/$base_exp_name"
@@ -50,6 +51,7 @@ export exp_dir="${base_exp_dir}/$exp_name"
 export config="$exp_dir/conf.yaml"
 
 export eval_model=avg_model.pt
+export eval_model=model_20.pt
 
 export gpus="[0]"
 export num_avg=2

@@ -10,7 +10,7 @@ stop_stage=4
 # rawdata_dir="/mnt/proj3/open-27-67/xodehn09/data/16kHz/NAKI/SPLIT"
 # rawdata_dir="/pfs/lustrep1/scratch/project_465001402/xodehn09/data/NAKI_SPLIT/"
 data="/pfs/lustrep3/scratch/project_465001402/xodehn09/data"
-proj="NAKI_data_2025-04-10/validation"
+proj="NAKI_data_2025-04-10/validation_split"
 
 
 rawdata_dir="$data/$proj"

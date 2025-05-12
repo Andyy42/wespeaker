@@ -15,7 +15,7 @@ stop_stage=3
 # data="/mnt/proj3/open-27-67/xodehn09/data/16kHz/NAKI/SPLIT"
 data="${DATA_DIR}"
 export dataset_path="NAKI_data_2025-04-10/train"
-export dataset_path="NAKI_data_2025-04-10/validation_split"
+# export dataset_path="NAKI_data_2025-04-10/validation_split"
 # vad_file=${data}/$(dirname $dataset_path)/audio_data_vad-2025-04-10.tsv
 # # Function to check if the port is in use
 # is_port_in_use() {
@@ -41,8 +41,8 @@ export OMP_NUM_THREADS=32
 # export LOGLEVEL=DEBUG
 
 
-data_type="shard"  # shard/raw
-# data_type="raw"  # shard/raw
+# data_type="shard"  # shard/raw
+data_type="raw"  # shard/raw
 
 # WavLM pre-trained
 # config=

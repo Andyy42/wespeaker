@@ -2,11 +2,11 @@
 #SBATCH --job-name=NAKI-ResNet32-generic # Job name
 #SBATCH --output=logs/resnet/out_NAKI_ResNet.%j     # Name of stdout output file
 #SBATCH --error=logs/resnet/err_NAKI_ResNet.%j      # Name of stderr error file
-#SBATCH --partition=small-g             # or ju-standard-g, partition name small-g
+#SBATCH --partition=dev-g             # or ju-standard-g, partition name small-g
 # 1 GPU
 #SBATCH --ntasks-per-node=16          # 16 MPI ranks per node
 #SBATCH --gpus-per-node=1             # Allocate one gpu per MPI rank
-#SBATCH --time=02:00:00                # Run time (d-hh:mm:ss)
+#SBATCH --time=01:00:00                # Run time (d-hh:mm:ss)
 #SBATCH --mem=56GB
 #SBATCH --account=project_465001737   # Project for billing
 
@@ -18,7 +18,7 @@ py311_rocm542_pytorch="${PROJ_DIR}/images/py311_rocm542_pytorch/py311_rocm542_py
 IMAGE=$py311_rocm542_pytorch
 
 
-SCRIPT_DIR="$PROJ_DIR/projects/wespeaker_voxlingua_v2/scripts/naki_resnet"
+SCRIPT_DIR="$PROJ_DIR/projects/wespeaker_voxlingua_v2/scripts/voxlingua107"
 SCRIPT="$SCRIPT_DIR/run_evaluate.sh"
 
 module purge
@@ -36,7 +36,7 @@ export MIOPEN_USER_DB_PATH="/tmp/$USER"
 # singularity exec --bind $PROJ_DIR:$PROJ_DIR --pwd $SCRIPT_DIR "$IMAGE" "$SCRIPT"
 
 # ResNet34 config for run script
-export exp_dir="exp_naki/ResNet34-TSTP-emb256-fbank80-num_frms200-aug0.6-spTrue-saFalse-softmax-SGD-epoch20"
+export exp_dir="exp_voxlingua107/ResNet34-TSTP-emb256-fbank80-num_frms200-aug0.6-spTrue-saFalse-softmax-SGD-epoch100"
 
 export PATH="/scratch/project_465001402/xodehn09/envs/py311_rocm542_pytorch.tmp/env/bin:$PATH" 
 

@@ -578,7 +578,7 @@ def utt_chunk(data, chunk_size=45):
         _type_: _description_
     """
     for sample in data:
-        assert 'sample_rate' in sample
+        assert 'sample_rate' in sample, f"sample: {sample}"
         assert 'wav' in sample
         assert 'key' in sample
         assert 'label' in sample

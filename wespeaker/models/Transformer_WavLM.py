@@ -55,8 +55,8 @@ class WavLM_Base_MHFA(nn.Module):
         self.feature_grad_mult = 0.08
 
         # Layer-wise rate decay rate 𝜉 
-        # self.llrd_xi = 1.5
-        self.llrd_xi = None
+        self.llrd_xi = 1.5
+        # self.llrd_xi = None
         # LR for Transformer Encoder: 2e-05 = 1e-3 * 0.02
         self.llrd_feature_grad_mult = 0.02
 
@@ -70,8 +70,8 @@ class WavLM_Base_MHFA(nn.Module):
         # LR_l = LR_1 * 𝜉^(l-1)
         if self.llrd_xi:
             layer_results = [
-                GradMultiply.apply(x, self.llrd_feature_grad_mult*(self.llrd_xi**exp))
-                for exp, x in enumerate(layer_results)
+                (GradMultiply.apply(x,self.llrd_feature_grad_mult*(self.llrd_xi**exp)), val)
+                for exp, (x, val) in enumerate(layer_results)
             ]
 
 

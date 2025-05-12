@@ -162,6 +162,14 @@ def train(config='conf/config.yaml', **kwargs):
         start_epoch = 1
     logger.info('start_epoch: {}'.format(start_epoch))
 
+    named_params = {k:v for k,v in model.named_parameters()}
+    
+    weights_k = named_params["speaker_extractor.back_end.weights_k"]
+    weights_v = named_params["speaker_extractor.back_end.weights_v"]
+    print("[INFO] Printing weights for MHFA k,v")
+    print(f"{weights_k=}")
+    print(f"{weights_v=}")
+    print(42*"=")
 
     # logger.info("<== Compiling model ==>")
     # import time
@@ -202,7 +210,21 @@ def train(config='conf/config.yaml', **kwargs):
         logger.info("Adapter-Tuning Trainable Param in SSL model is: " + str(total_learnable))
         logger.info("Adapter-Tuning Trainable Param in Back_end model is: " + str(SpkEnc_learnable))
 
+
+    # Convert weight to tensor
+    if 'weight' in configs['loss_args']:
+        if isinstance(configs['loss_args']['weight'], list):
+            weight_orig = configs['loss_args']['weight']
+            configs['loss_args']['weight'] = torch.tensor(configs['loss_args']['weight'],dtype=torch.float32).cuda()
+
     criterion = getattr(torch.nn, configs['loss'])(**configs['loss_args'])
+
+    # Put back the original value (due to data types in YAML file..)
+    if 'weight' in configs['loss_args']:
+        if isinstance(configs['loss_args']['weight'], list):
+            configs['loss_args']['weight'] = weight_orig
+
+
     if rank == 0:
         logger.info("<== Loss ==>")
         logger.info("loss criterion is: " + configs['loss'])

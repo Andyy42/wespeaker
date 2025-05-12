@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=EvaluateNaki_MODEL_ID # Job name
+#SBATCH --job-name=EvaluateNaki_epoch_40_MODEL_ID # Job name
 #SBATCH --output=logs/wavlm/out_eval__MODEL_ID.%j     # Name of stdout output file
 #SBATCH --error=logs/wavlm/err_eval__MODEL_ID.%j      # Name of stderr error file
 #SBATCH --partition=small-g             # or ju-standard-g, partition name small-g
@@ -7,7 +7,7 @@
 #SBATCH --ntasks-per-node=8          # 16 MPI ranks per node
 #SBATCH --gpus-per-node=1             # Allocate one gpu per MPI rank
 #SBATCH --mem=56GB
-#SBATCH --time=01:10:00                # Run time (d-hh:mm:ss)
+#SBATCH --time=01:20:00                # Run time (d-hh:mm:ss)
 #SBATCH --account=project_465001737   # Project for billing
 
 # https://lumi-supercomputer.github.io/LUMI-training-materials/4day-20231003/extra_2_06_Introduction_to_AMD_ROCm_Ecosystem/
@@ -36,7 +36,7 @@ export MIOPEN_USER_DB_PATH="/tmp/$USER"
 # singularity exec --bind $PROJ_DIR:$PROJ_DIR --pwd $SCRIPT_DIR "$IMAGE" "$SCRIPT"
 
 base_exp_dir="exp_naki"
-base_exp_name="NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin"
+base_exp_name="01_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin"
 # base_exp_name="NAKI-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
 
 # base_exp_name="NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"

@@ -198,6 +198,13 @@ def Dataset(data_type,
         # resample
         resample_rate = configs.get('resample_rate', 16000)
         dataset = Processor(dataset, processor.resample, resample_rate)
+
+        # ##########################################
+        # # Custom utterence chunk
+        # if configs.get('utt_chunk', False):
+        #     dataset = Processor(dataset, processor.utt_chunk, chunk_size=configs['utt_chunk'])
+        # ##########################################
+
         # speed perturb
         speed_perturb_flag = configs.get('speed_perturb', True)
         if speed_perturb_flag:
@@ -221,10 +228,12 @@ def Dataset(data_type,
         # compute fbank
             dataset = Processor(dataset, processor.compute_fbank, **configs['fbank_args'])
 
+    # Custom utterence chunk
     if configs.get('utt_chunk', False):
         dataset = Processor(dataset, processor.utt_chunk, chunk_size=configs['utt_chunk'])
 
     if raw_wav:
+
         dataset = Processor(dataset, processor.compute_raw)
         return dataset
     # apply cmvn

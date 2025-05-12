@@ -24,7 +24,7 @@ data_type="raw"  # shard/raw
 # exp_dir=exp/WavLM-BasePlus-FullFineTuning-MHFA-emb256-3s-LRS10-Epoch40-softmax
 config=$exp_dir/conf.yaml
 
-export dataset_path="NAKI_data_2025-04-10/validation_split"
+export dataset_path="voxlingua107_dev"
 
 gpus="[0]"
 checkpoint=
@@ -83,7 +83,7 @@ if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
     --exp_dir $exp_dir --model_path $model_path \
     --nj 1 --gpus $gpus --data_type ${data_type} \
     --data_list ${data}/$dataset_path/${data_type}.list \
-    --store_dir NAKI_data_2025-04-10 \
+    --store_dir voxlingua107_dev \
     --data_label ${data}/$dataset_path/utt2spk
 
 fi
