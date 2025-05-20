@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# sjob-err: fuzzy-select a Slurm job and show its stderr 
+sjob-err() {
+  local sel job state out
+
+  # let you pick a JOBID via fzf
+  sel=$(squeue -u "$USER" -h -o "%i %j %T" | fzf --prompt="Slurm Job> ")
+  if [[ -z $sel ]]; then
+    echo "No job selected." >&2
+    return 1
+  fi
+
+  job=${sel%% *}                    # extract the JOBID
+  if ! [[ $job =~ ^[0-9]+$ ]]; then
+    echo "Invalid selection: '$sel'" >&2
+    return 1
+  fi
+
+  # inspect its state
+  state=$(scontrol show job "$job" | awk -F= '/JobState/ {print $2; exit}')
+  if [[ -z $state ]]; then
+    echo "Could not determine state for job $job" >&2
+    return 1
+  fi
+
+  if [[ $state == RUNNING ]]; then
+    sattach "$job"                 # stream live output
+  else
+    out=$(scontrol show job "$job" \
+          | awk -F= '/StdErr/ {print $2; exit}')
+    if [[ -z $out ]]; then
+      echo "No StdErr path found for job $job" >&2
+      return 1
+    elif [[ ! -r $out ]]; then
+      echo "Cannot read stdout file: $out" >&2
+      return 1
+    fi
+    tail --follow "$out"                     # dump the completed stdout file
+  fi
+}
+
+sjob-err

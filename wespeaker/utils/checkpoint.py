@@ -17,6 +17,8 @@ import torch
 
 
 def load_checkpoint(model: torch.nn.Module, path: str):
+    print(path)
+    print(model)
     checkpoint = torch.load(path, map_location='cpu')
     model.load_state_dict(checkpoint, strict=False)
 

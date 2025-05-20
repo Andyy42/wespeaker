@@ -18,6 +18,8 @@ import logging
 import json
 import os
 
+from pathlib import Path
+
 
 def get_args():
     parser = argparse.ArgumentParser(description='')
@@ -43,6 +45,7 @@ def main():
 
     if os.path.exists(args.vad_file):
         vad_dict = {}
+        logging.info('Loading vad file: %s' % args.vad_file)
         with open(args.vad_file, 'r', encoding='utf8') as fin:
             for line in fin:
                 arr = line.strip().split()
@@ -53,8 +56,11 @@ def main():
     else:
         vad_dict = None
 
+    logging.info('VAD dict keys size: %s' % (len(vad_dict.keys()) if vad_dict else 0))
     data = []
     with open(args.utt2spk_file, 'r', encoding='utf8') as fin:
+
+        logging.info('Loading utt2spk_file: %s' % args.utt2spk_file)
         for line in fin:
             arr = line.strip().split(maxsplit=1)
             key = arr[0]  # os.path.splitext(arr[0])[0]
@@ -64,12 +70,27 @@ def main():
             if vad_dict is None:
                 data.append((key, spk, wav))
             else:
-                if key not in vad_dict:
+                vad_key = Path(key).name
+                if (vad_key not in vad_dict):
+                    ########################################## 
+                    # NOTE: Raise ValueError explicitely since all recordings should have VAD !!!
+                    raise ValueError(
+                        'key {} not in vad_dict, please check vad file'.
+                    format(key))
+                    ########################################## 
                     continue
-                vad = vad_dict[key]
+                vad: list[tuple[float,float]] = vad_dict[vad_key]
+                # logging.info('VAD key {} '.format(key))
                 data.append((key, spk, wav, vad))
 
+                # vad = vad_dict[key]
+                # data.append((key, spk, wav, vad))
+    logging.info('Total {} data'.format(len(data)))
+    logging.info('Total {} spk'.format(len(set([x[1] for x in data]))))
+
+
     with open(args.raw_list, 'w', encoding='utf8') as fout:
+        logging.info('Loading raw_list: %s' % args.raw_list)
         for utt_info in data:
             if len(utt_info) == 4:
                 key, spk, wav, vad = utt_info

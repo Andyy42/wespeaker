@@ -26,7 +26,10 @@ from scipy.io import wavfile
 import numpy as np
 import struct
 
-AUDIO_FORMAT_SETS = set(['flac', 'mp3', 'm4a', 'ogg', 'opus', 'wav', 'wma'])
+from pathlib import Path
+
+# WARN: Use .wav instead of .WAV !!!
+AUDIO_FORMAT_SETS = set(['flac', 'mp3', 'm4a', 'ogg', 'opus', 'wav', 'wma' ])
 
 
 def write_wav_to_bytesio(audio_data, sample_rate):
@@ -70,7 +73,7 @@ def write_wav_to_bytesio(audio_data, sample_rate):
         return wav_stream.getvalue()
 
 
-def apply_vad(wav_data, vad):
+def apply_vad(wav_data, vad: list[tuple[float,float]]):
     sr, audio = wavfile.read(io.BytesIO(wav_data))
 
     voice_part_list = []
@@ -88,7 +91,8 @@ def write_tar_file(data_list, tar_file, index=0, total=1):
     read_time = 0.0
     write_time = 0.0
     with tarfile.open(tar_file, "w") as tar:
-        for item in data_list:
+        for i, item in enumerate(data_list):
+            # logging.info('Processing {} {}/{}'.format(tar_file, i, len(data_list)))
             if len(item) == 3:
                 key, spk, wav = item
                 vad = None
@@ -110,8 +114,11 @@ def write_tar_file(data_list, tar_file, index=0, total=1):
                 with open(wav, 'rb') as fin:
                     data = fin.read()
 
+            
             if vad is not None:
+                # logging.log("Applying VAD to {} with vad {}".format(key, vad[0]))
                 data = apply_vad(data, vad)
+
             read_time += (time.time() - ts)
             assert isinstance(spk, str)
             ts = time.time()
@@ -175,6 +182,7 @@ def main():
         with open(args.vad_file, 'r', encoding='utf8') as fin:
             for line in fin:
                 arr = line.strip().split()
+                # print(arr) # DEBUG
                 utt, start, end = arr[-3], arr[-2], arr[-1]
                 if utt not in vad_dict:
                     vad_dict[utt] = []
@@ -193,10 +201,24 @@ def main():
             if vad_dict is None:
                 data.append((key, spk, wav))
             else:
-                if key not in vad_dict:
+                vad_key = Path(key).name
+                if (vad_key not in vad_dict):
+                    ########################################## 
+                    # NOTE: Raise ValueError explicitely since all recordings should have VAD !!!
+                    raise ValueError(
+                        'key {} not in vad_dict, please check vad file'.
+                    format(key))
+                    ########################################## 
                     continue
-                vad = vad_dict[key]
+                vad: list[tuple[float,float]] = vad_dict[vad_key]
+                # logging.info('VAD key {} '.format(key))
                 data.append((key, spk, wav, vad))
+
+    logging.info('Total {} data'.format(len(data)))
+    logging.info('Total {} spk'.format(len(set([x[1] for x in data]))))
+    if vad_dict is not None:
+        logging.info('Total {} VAD'.format(len(vad_dict)))
+
 
     if args.shuffle:
         random.shuffle(data)
