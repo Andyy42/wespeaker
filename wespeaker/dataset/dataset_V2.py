@@ -25,6 +25,8 @@ from wespeaker.utils.file_utils import read_lists
 from wespeaker.dataset.lmdb_data import LmdbData
 import wespeaker.dataset.processor_V2 as processor
 
+from pathlib import Path
+from typing import Iterable
 
 class Processor(IterableDataset):
 
@@ -154,7 +156,12 @@ def Dataset(data_type,
             whole_utt: use whole utt or random chunk
     """
     assert data_type in ['shard', 'raw', 'feat']
-    lists = read_lists(data_list_file)
+
+    if isinstance(data_list_file, Path):
+        lists = read_lists(data_list_file)
+    elif isinstance(data_list_file, Iterable):
+        lists = data_list_file
+    # lists = read_lists(data_list_file)
     shuffle = configs.get('shuffle', False)
     raw_wav = configs.get('raw_wav', False)
     # Global shuffle
