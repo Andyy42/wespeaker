@@ -1,0 +1,7 @@
+wespeaker.models.Transformer\_WavLM\_Large module
+=================================================
+
+.. automodule:: wespeaker.models.Transformer_WavLM_Large
+   :members:
+   :undoc-members:
+   :show-inheritance:

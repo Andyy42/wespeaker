@@ -1,0 +1,35 @@
+wespeaker.models package
+========================
+
+.. automodule:: wespeaker.models
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 2
+
+   wespeaker.models.Transformer_WavLM
+   wespeaker.models.Transformer_WavLM_Adapter
+   wespeaker.models.Transformer_WavLM_Drop
+   wespeaker.models.Transformer_WavLM_Large
+   wespeaker.models.campplus
+   wespeaker.models.convert_repvgg
+   wespeaker.models.ecapa_tdnn
+   wespeaker.models.eres2net
+   wespeaker.models.gemini_dfresnet
+   wespeaker.models.pooling_layers
+   wespeaker.models.projections
+   wespeaker.models.redimnet
+   wespeaker.models.repvgg
+   wespeaker.models.res2net
+   wespeaker.models.resnet
+   wespeaker.models.samresnet
+   wespeaker.models.speaker_model
+   wespeaker.models.ssl_backend
+   wespeaker.models.tdnn
+   wespeaker.models.whisper_PMFA
+   wespeaker.models.xi_vector

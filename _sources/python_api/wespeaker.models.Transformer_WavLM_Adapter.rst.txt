@@ -1,0 +1,7 @@
+wespeaker.models.Transformer\_WavLM\_Adapter module
+===================================================
+
+.. automodule:: wespeaker.models.Transformer_WavLM_Adapter
+   :members:
+   :undoc-members:
+   :show-inheritance:

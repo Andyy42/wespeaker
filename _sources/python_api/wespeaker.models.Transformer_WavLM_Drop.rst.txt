@@ -1,0 +1,7 @@
+wespeaker.models.Transformer\_WavLM\_Drop module
+================================================
+
+.. automodule:: wespeaker.models.Transformer_WavLM_Drop
+   :members:
+   :undoc-members:
+   :show-inheritance:
