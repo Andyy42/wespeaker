@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Run squeue and save output to a variable
+output=$(squeue --me )
+
+# Extract header and pass the rest to fzf
+header=$(echo "$output" | head -n 1)
+list=$(echo "$output" | tail -n +2)  # Skip the first line
+
+# Use fzf with the extracted header
+selected=$(echo "$list" | fzf --header "$header")
+
+job_id=$(echo "$selected" | awk '{print $1}')
+# Print the selected job's ID
+echo "Selected Job ID: $(echo "$selected" | awk '{print $1}')"
+
+echo "Running: 'srun --overlap --pty --jobid=$job_id $SHELL'"
+srun --overlap --pty --jobid=$job_id $SHELL
+
