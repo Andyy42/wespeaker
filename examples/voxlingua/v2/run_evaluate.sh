@@ -82,7 +82,7 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
     --exp_dir $exp_dir --model_path $model_path \
     --nj 1 --gpus $gpus --data_type ${data_type} \
     --data_list ${data}/raw.list \
-    --store_dir NAKI_diff_2024-11-14 \
+    --store_dir NAKI_filtered \
     --data_label ${data}/utt2spk
 
   # VoxLingua107

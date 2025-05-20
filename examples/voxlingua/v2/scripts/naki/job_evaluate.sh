@@ -2,7 +2,7 @@
 #SBATCH --job-name=Evaluate_MODEL_ID # Job name
 #SBATCH --output=logs/wavlm/out_eval__MODEL_ID.%j     # Name of stdout output file
 #SBATCH --error=logs/wavlm/err_eval__MODEL_ID.%j      # Name of stderr error file
-#SBATCH --partition=small-g             # or ju-standard-g, partition name small-g
+#SBATCH --partition=standard-g             # or ju-standard-g, partition name small-g
 #SBATCH --nodes=1                     # Total number of nodes 
 #SBATCH --ntasks-per-node=8          # 16 MPI ranks per node
 #SBATCH --gpus-per-node=1             # Allocate one gpu per MPI rank
@@ -22,8 +22,12 @@ module load gcc-native/13.2
 
 export PROJ_DIR="/scratch/project_465001402/xodehn09"
 # export DATA_DIR="${PROJ_DIR}/data"
-export EVAL_NAME="NAKI_data_2025-04-10/validation"
-export DATA_DIR="${PROJ_DIR}/data/NAKI_data_2025-04-10/validation"
+## NAKI II
+# export EVAL_NAME="NAKI_data_2025-04-10/validation"
+# export DATA_DIR="${PROJ_DIR}/data/NAKI_data_2025-04-10/validation"
+## NAKI I
+export EVAL_NAME="NAKI_filtered/test"
+export DATA_DIR="${PROJ_DIR}/data/NAKI_filtered/test"
 
 SCRIPT_DIR="$PROJ_DIR/projects/wespeaker_voxlingua_v2/scripts/naki"
 SCRIPT="$SCRIPT_DIR/run_evaluate.sh"
@@ -39,6 +43,10 @@ base_exp_dir="exp_naki"
 # base_exp_name="NAKI-only--WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch100-softmax"
 # base_exp_name="NAKI-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
 base_exp_name="03_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin_lwd_classweights"
+
+export config="conf/wavlm_base_MHFA_LR_softmax_20_naki.yaml"
+base_exp_name="01_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-softmax"
+# base_exp_name="01_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
 
 # base_exp_name="NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin"
 # export base_exp_dir="exp_naki/$base_exp_name"

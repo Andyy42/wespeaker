@@ -54,9 +54,9 @@ class WavLM_Base_MHFA(nn.Module):
             self.back_end = CorrelationPooling(outputs_dim=embed_dim)        
         self.feature_grad_mult = 0.08
 
+        self.llrd_xi = None
         # Layer-wise rate decay rate 𝜉 
-        self.llrd_xi = 1.5
-        # self.llrd_xi = None
+        # self.llrd_xi = 1.5
         # LR for Transformer Encoder: 2e-05 = 1e-3 * 0.02
         self.llrd_feature_grad_mult = 0.02
 

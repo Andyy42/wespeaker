@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH --job-name=20-epochs-NAKI-WavLM-2025-04-10 # Job name
+#SBATCH --job-name=20-epochs-SM-NAKI-WavLM-2025-04-10 # Job name
 #SBATCH --output=logs/wavlm-naki/out_naki_train_sm.%j     # Name of stdout output file
 #SBATCH --error=logs/wavlm-naki/err_naki_train_sm.%j      # Name of stderr error file
 #SBATCH --partition=small-g             # or ju-standard-g, partition name small-g
@@ -41,17 +41,27 @@ export MIOPEN_USER_DB_PATH="/tmp/$USER"
 
 # exp_name=WavLM-BasePlus-FullFineTuning-MHFA-emb256-3s-LRS10-Epoch40-no-margin
 # Old experiment
-base_exp_name="03_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-no-margin_lwd_classweights"
+base_exp_name="01_NAKI-2025-04-10-WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch20-softmax"
 export base_exp_dir="exp_naki/$base_exp_name"
 # export checkpoint="exp/WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin/models/model_21.pt"
 # export checkpoint="${base_exp_dir}/models/base_model.pt"
 # export checkpoint="exp_naki/model_00.pt" # Invalid model...
+
+# AAM 0.0 margin checkpoint
 export checkpoint="exp/WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-no-margin/models/MHFA_SM_model_00.pt"
+# Softmax checkpoint
+export checkpoint="exp/WavLM-BasePlus-MHFA-emb256-3s-LRS10-Epoch40-softmax/models/MHFA_SM_model_00.pt"
+
 # export checkpoint="$base_exp_dir/models/model_31.pt"
 
 # export config="$base_exp_dir/config.yaml"
 # export config="conf/wavlm_base_MHFA_LR_no_margin_40_naki.yaml"
+
 export config="conf/wavlm_base_MHFA_LR_no_margin_classweights_20_naki.yaml"
+
+# Softmax config
+export config="conf/wavlm_base_MHFA_LR_softmax_20_naki.yaml"
+
 
 # New experiment
 export exp_name="$base_exp_name"

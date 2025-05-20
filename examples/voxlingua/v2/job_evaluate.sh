@@ -55,7 +55,7 @@ export checkpoint="${exp_dir}/models/model_MODEL_ID.pt"
 export eval_model=model_MODEL_ID.pt
 
 export checkpoint="${exp_dir}/models/model_1.pt"
-export eval_model=final_model.pt
+export eval_model=avg_model.pt
 
 export gpus="[0]"
 export num_avg=2
