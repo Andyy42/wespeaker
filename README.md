@@ -1,8 +1,10 @@
 # WeSpeaker NAKI fork
 
-Repository for LID with VoxLingua107 & DID with NAKI:
+Project for LID with VoxLingua107 & DID with NAKI is in:
 
 * `examples/voxlingua/v2`
+
+This project was used for experiments & training of models.
 
 ## How to run example for NAKI
 
