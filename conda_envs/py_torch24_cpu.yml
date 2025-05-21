@@ -1,0 +1,41 @@
+name: py_torch24_cpu
+channels:
+  - pytorch
+  - conda-forge
+dependencies:
+    # Tools
+    # - ipython
+    # - nvitop
+    # - ffmpeg
+    # Libraries
+    - python>=3.9
+    # - mamba
+    - numpy
+    # - h5py
+    # - nvidia::cudatoolkit
+    - pytorch::cpuonly # cpuonly package 
+    - pytorch::pytorch=2.4.1
+    - pytorch::torchaudio=2.4.1
+    # - pytorch-cuda=12.1
+    # - mccabe
+    # - cudatoolkit=11.3
+    - fire
+    - kaldiio=2.17.2
+    - kaldi
+    - PyYAML
+    - scipy
+    - tqdm
+    # - scikit-learn
+    # - matplotlib
+    - pypeln
+    - pip
+    - pip: 
+      - lmdb
+      - soundfile==0.10.3.post1
+      - tableprint
+      - torchnet==0.0.4
+      - silero-vad
+      - pre-commit==3.5.0
+      - s3prl
+      # - hdbscan==0.8.37
+      # - umap-learn==0.5.6

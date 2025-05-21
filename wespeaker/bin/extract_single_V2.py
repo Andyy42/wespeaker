@@ -227,19 +227,17 @@ def extract(
     )
     return(output)
 
-
-
-# NOTE: Uses io.BytesIO 
+# TODO: How to handle flags with fire lib?
 def extract_1file(
 #    input_wav_file: str,    
     input_wav: io.BytesIO|str,
     config: str = "conf/config.yaml",
     **kwargs,
 ):
-    """Extracts single embedding from ioBytesIO object.
+    """Extracts single embedding from the wav file.
 
     Args:
-        input_wav_file (io.BytesIO): Input wav.
+        input_wav_file (str): Input wav file.
         model_path (str): Model path.
         config (str, optional): Configuration for the model. Defaults to "conf/config.yaml".
         device_type (str, optional): Device type for torch, either "cpu" or "gpu". Defaults to "cpu".

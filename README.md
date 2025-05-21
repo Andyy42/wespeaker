@@ -1,3 +1,23 @@
+# WeSpeaker NAKI fork
+
+Repository for LID with VoxLingua107 & DID with NAKI:
+
+* `examples/voxlingua/v2`
+
+## How to run example for NAKI
+
+Example of how to run models for inference on single `.wav`:
+
+* `example_run.sh`: Installs new environment with `conda` or `micromamda` and runs the inference example (requires path to WavLM model)
+
+Prerequisite: Installed `conda` or `micromamba` + downloaded WavLM model for the DID task.
+
+Example audio & config is in: `naki-example/`
+
+
+
+---
+
 # WeSpeaker
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://opensource.org/licenses/Apache-2.0)

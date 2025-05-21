@@ -1,0 +1,61 @@
+### train configuraton
+seed: 42
+
+data_type: "raw"
+batch_size: 1
+num_workers: 1
+
+dataset_args:
+  # the sample number which will be traversed within one epoch, if the value equals to 0,
+  # the utterance number in the dataset will be used as the sample_num_per_epoch.
+  sample_num_per_epoch: 0
+  resample_rate: 16000
+  speed_perturb: False
+  num_frms: 300
+  aug_prob: 0.0 # 0.6 # prob to add reverb & noise aug per sample
+  raw_wav: True
+  fbank_args:
+    num_mel_bins: 80
+    frame_shift: 10
+    frame_length: 25
+    dither: 1.0
+  spec_aug: False
+
+model: WavLM_Base_MHFA
+model_init: null
+model_args:
+  model_path: 'data/models/pretrained/WavLM-Base+.pt'
+  head_nb: 64
+  embed_dim: 256
+  pooling: "MHFA" #Group 
+  group: 1
+
+projection_args:
+  project_type: "arc_margin_intertopk_subcenter" # add_margin, arc_margin, sphere, softmax
+  scale: 32.0
+  easy_margin: False
+
+margin_scheduler: MarginScheduler
+margin_update:
+  initial_margin: 0.0
+  final_margin: 0.0
+  increase_start_epoch: 2
+  fix_start_epoch: 5
+  update_margin: True
+  increase_type: "exp" # exp, linear
+
+loss: CrossEntropyLoss
+loss_args: {}
+
+optimizer: SGD
+optimizer_args:
+  momentum: 0.9
+  nesterov: True
+  weight_decay: 1.0e-6
+
+scheduler: ExponentialDecrease
+scheduler_args:
+  initial_lr: 1.0e-2 # 8.0e-3
+  final_lr: 4.4e-3 #4.4e-3 
+  warm_up_epoch: 3
+  warm_from_zero: True
