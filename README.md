@@ -14,7 +14,7 @@ Example of how to run models for inference on single `.wav`:
 
 Prerequisite: Installed `conda` or `micromamba` + downloaded WavLM model for the DID task.
 
-Example audio & config is in: `naki-example/`
+Example audio from 3-2 Northern Eastern-Moravian (Walachian) & config is in: `naki-example/`
 
 
 
