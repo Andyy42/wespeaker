@@ -6,6 +6,10 @@ Project for LID with VoxLingua107 & DID with NAKI is in:
 
 This project was used for experiments & training of models.
 
+Models are in the `models/` folder for LID on VoxLingua107, and dialect identification on NAKI.
+
+Models repository URL: https://drive.google.com/drive/folders/11zvV7dmzg0zuDNKwhi4dHd0HzvJcswZF?usp=sharing
+
 ## How to run example for NAKI
 
 Example of how to run models for inference on single `.wav`:
